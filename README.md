@@ -18,3 +18,16 @@ the two operations: extend and quote operation. The former is
 used for measurement while the latter for attestation, which will
 be explained further in the following paragraphs.
 
+IMA is a Linux framework for system integrity verification that
+follows the TCG standards [[2, 3]](https://github.com/harris012/extend-IMA-measurments/blob/master/bibliography-and-references.md#2). Figure 1 presents the overall
+structure of IMA, consisting of three layers: measurement targets
+(executables, LKMs (Loadable Kernel Modules) and files), IMA
+mechanisms (measurement, remote attestation and appraisal), and
+measurement results (Integrity measurement list and PCR extend). While booting, IMA measures all executables, LKMs and their
+configuration files before execution. Taking a measurement of an
+executable (or LKM or file) means computing a cryptographic hash of the executable such as SHA-1, SHA-512, and MD5. The
+computed hashes are managed by a list, called as IML (Integrity
+Measurement List). 
+![Screenshot from 2023-01-09 02-09-29](https://user-images.githubusercontent.com/57041349/211228041-21db07a1-827b-4005-b7dd-54b0c15c4681.png)
+
+
