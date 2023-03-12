@@ -30,7 +30,7 @@ This repo uses [tpm2-tools](https://github.com/tpm2-software/tpm2-tools) project
 
 
 ### Steps
-1. “Device-Node“ creating the endorsement-key and the attestation-identity-key. Use the script `create_keys.py`. It will generate six files as shown in the command below.
+1. “Device-Node“ creating the endorsement-key and the attestation-identity-key. Use the script [01-create_keys.py](https://github.com/harris012/extend-IMA-measurments/blob/master/simple-attestation-scripts/scripts/01-create_keys.py). It will generate six files as shown in the command below.
 
 ```bash
 
@@ -52,7 +52,7 @@ tpm2_createak \
 
 2. “Device-Node“ retrieving the endorsement-key-certificate to send to the
 “Privacy-CA“. The endorsement key certificates are provided by the TPM manufacturer. While most TPM manufacturers
-store them in the [TCG specified NV indices]((https://trustedcomputinggroup.org/wp-content/uploads/TCG_IWG_Credential_Profile_EK_V2.1_R13.pdf)). It can be done by executing the script `get_ek_certificate.py`.
+store them in the [TCG specified NV indices]((https://trustedcomputinggroup.org/wp-content/uploads/TCG_IWG_Credential_Profile_EK_V2.1_R13.pdf)). It can be done by executing the script [02-get_ek_certificate.py](https://github.com/harris012/extend-IMA-measurments/blob/master/simple-attestation-scripts/scripts/02-get_ek_certificate.py).
 
 ```bash
 # TPM2 NV Index 0x1c00002 is the TCG specified location for RSA-EK-certificate.
@@ -74,7 +74,7 @@ in the proposed simple-attestation-framework — Once when the “Service-Provid
 requests the “Device-Node“ to send over the identities as part of the service
 registration process. And the second time when the “Device-Node“ sends its AIK
 to the “Service-Provider“ and the “Service-Provider“ in turn sends it over to
-the “Privacy-CA“ in order to verify the anonymous identity. It will be done using the script `credential_activation.py`.
+the “Privacy-CA“ in order to verify the anonymous identity. It will be done using the script [03-credential_activation.py](https://github.com/harris012/extend-IMA-measurments/blob/master/simple-attestation-scripts/scripts/03-credential_activation.py).
 
 ```bash
 # Privacy-CA creating the wrapped credential and encryption key
@@ -122,7 +122,7 @@ certinfodata:74686973206973206d7920736563726574
 and the ephemeral NONCE data. The NONCE is to ensure there is no possibility of
 a replay attack on the quote verification and validation process. Validity of
 the signing key for attestation quote is ascertained to be a valid one by the
-“Privacy-CA“. This step will be performed by the script `generate_pcr_attestation_quote.py`.
+“Privacy-CA“. This step will be performed by the script [04-generate_pcr_attestation_quote.py](https://github.com/harris012/extend-IMA-measurments/blob/master/simple-attestation-scripts/scripts/04-generate_pcr_attestation_quote.py).
 
 ```bash
 echo "12345678" > SERVICE_PROVIDER_NONCE
@@ -167,7 +167,7 @@ the “Device-Node“. To make the determination of the software-state of the
 “Device-Node“, after the signature and nonce verification process, the
 “Service-Provider“ validates the digest of the PCR values in the quote against
 a known-good-valid —the [golden/ reference value](https://tpm2-software.github.io/2020/06/12/Remote-Attestation-With-tpm2-tools.html#golden-or-reference-pcr)
-ascertained previously. This step will be performed by the script `get_ek_certificate.py`.
+ascertained previously. This step will be performed by the script [05-check_quote.py](https://github.com/harris012/extend-IMA-measurments/blob/master/simple-attestation-scripts/scripts/05-check_quote.py).
 
 ```bash
 tpm2_checkquote \
@@ -187,3 +187,5 @@ b'pcrs:\n  sha256:\n    0 : 0xE21B703EE69C77476BCCB43EC0336A9A1B2914B378944F7B00
 Quote is valid
 
 ```
+
+Finally, the script [pcr_10_cal.py](https://github.com/harris012/extend-IMA-measurments/blob/master/simple-attestation-scripts/scripts/pcr_10_cal.py) reads the binary_runtime_measurements file, hashes the measurement value for PCR 10, extends the PCR 10 value, and finally prints the PCR values using tpm2-tools package.
